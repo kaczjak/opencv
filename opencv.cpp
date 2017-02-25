@@ -365,8 +365,8 @@ void wyswietlNajlepiejPunktowane(cv::Mat obrazek, std::vector<slowo>slowaNaPlans
 int main()
 {
 
-
-
+	//nie dzia³a wektor
+	if (1 == 1)std::cout << "1";
 	//Przygotowanie zdjêcia
 
 	cv::Mat image, tresh;
