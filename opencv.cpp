@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <map>
 
-//TODO: Na podanym obrazie znaleŸæ najlepiej punktowane s³owo, zaznaczyæ je czerwonym prostok¹tem, podaæ jego punktacje na podstawie LUT z wartoœcimi punktowymi liter
+//TODO: Na podanym obrazie znaleï¿½ï¿½ najlepiej punktowane sï¿½owo, zaznaczyï¿½ je czerwonym prostokï¿½tem, podaï¿½ jego punktacje na podstawie LUT z wartoï¿½cimi punktowymi liter
 
 class letter  //Klasa do przechowywania informacji o literze na planszy
 {
@@ -29,7 +29,7 @@ public:
 
 };
 
-class slowo    //Klasa do przechowywania informacji o s³owie na planszy
+class slowo    //Klasa do przechowywania informacji o sï¿½owie na planszy
 {
 public:
 	std::vector<letter>litery;
@@ -43,7 +43,7 @@ cv::Point2f odleglosc(cv::Point rog, cv::Mat obrazek)
 	cv::Point2f najblizszy = cv::Point2f(obrazek.cols, obrazek.rows);
 	int odlmin = obrazek.cols + obrazek.rows;
 
-	for (int y = 0; y < obrazek.rows; y++) 
+	for (int y = 0; y < obrazek.rows; y++)
 	{
 		for (int x = 0; x < obrazek.cols; x++)
 		{
@@ -54,6 +54,7 @@ cv::Point2f odleglosc(cv::Point rog, cv::Mat obrazek)
 				{
 					odlmin = odl;
 					najblizszy.x = x;
+					najblizszy.y = x;
 					najblizszy.y = y;
 				}
 			}
@@ -136,10 +137,10 @@ std::vector<letter>filterDup(std::vector<letter>letters, std::vector<std::vector
 	double tresh = 0.25;
 	std::vector<std::vector<cv::Point> >contursOut;
 	std::vector<letter>out;
-	
+
 	out.push_back(letters[letters.size() - 1]);
 	contursOut.push_back(conturs2[letters.size() - 1]);
-	
+
 	for (int i = 0; i < letters.size() - 1; i++)
 	{
 		if (abs(letters[i].wsp.x - letters[i + 1].wsp.x)+(letters[i].wsp.y - letters[i + 1].wsp.y)>tresh)
@@ -177,7 +178,7 @@ void wczytajPremie (int tablica[15][15], std::string filename)
 			tablica[i][j] = std::stod(std::string(temp));
 		}
 	}
-	
+
 }
 
 std::map<char, int>wczytajWartosciLiter(std::string fileName)
@@ -196,7 +197,7 @@ std::map<char, int>wczytajWartosciLiter(std::string fileName)
 			wartosci.insert(in);
 		}
 	}
-	
+
 	return wartosci;
 }
 
@@ -247,7 +248,7 @@ void uzupelnijPunktacjeLiter(letter literyNaPlanszy[15][15], int premieLiterowe[
 				literyNaPlanszy[i][j].premiaLiterowa = premieLiterowe[i][j];
 				literyNaPlanszy[i][j].premiaWyrazowa = premieWyrazowe[i][j];
 				literyNaPlanszy[i][j].punktyLitera = wartosciLiter.find(literyNaPlanszy[i][j].recChar)->second;
-			}	
+			}
 		}
 	}
 }
@@ -291,7 +292,7 @@ std::vector<slowo>znajdzSlowaNaPlanszy(letter literyNaPlanszy[15][15])
 	return slowaNaPlanszy;
 }
 
-std::vector<slowo>filtrujS³owaNaPlanszy(std::vector<slowo>slowaNaPlanszy)
+std::vector<slowo>filtrujSï¿½owaNaPlanszy(std::vector<slowo>slowaNaPlanszy)
 {
 	std::vector<slowo>out;
 	for (auto i = slowaNaPlanszy.begin(); i != slowaNaPlanszy.end(); i++)
@@ -357,17 +358,17 @@ void wyswietlNajlepiejPunktowane(cv::Mat obrazek, std::vector<slowo>slowaNaPlans
 			std::cout << "premia slowna: " << i->premiaWyrazowa << std::endl << std::endl;
 		}
 	}
-	cv::namedWindow("Najlepiej punktowane s³owo", cv::WINDOW_NORMAL);
-	cv::imshow( "Najlepiej punktowane s³owo", obrazek);
+	cv::namedWindow("Najlepiej punktowane sï¿½owo", cv::WINDOW_NORMAL);
+	cv::imshow( "Najlepiej punktowane sï¿½owo", obrazek);
 	cv::waitKey(0);
 }
 
 int main()
 {
 
-	//nie dzia³a wektor
+	//nie dziaï¿½a wektor
 	if (1 == 1)std::cout << "1";
-	//Przygotowanie zdjêcia
+	//Przygotowanie zdjï¿½cia
 
 	cv::Mat image, tresh;
 	image = cv::imread("C:\\Users\\kaczj_000\\OneDrive\\STUDIA\\CPO cyfrowe przetwarzanie obrazu\\CPO_Jakub_Kaczorowski\\JakubKaczorowski41\\ideal.png");
@@ -386,8 +387,8 @@ int main()
 	cv::dilate(tresh, tresh, cv::Mat());
 	cv::dilate(tresh, tresh, cv::Mat());
 	cv::dilate(tresh, tresh, cv::Mat());
-	
-	
+
+
 
 
 	//Korekcja perspektywy
@@ -402,17 +403,17 @@ int main()
 
 	cv::Mat transf = cv::getPerspectiveTransform(znalezioneNarozniki, doceloweNarozniki);
 	cv::warpPerspective(image, image, transf, image.size());
-	
+
 	cv::Mat prosty = image;
 
-	
 
 
-	//Wyszukanie konturów
+
+	//Wyszukanie konturï¿½w
 
 	cv::split(image, RGB2);
 	cv::threshold(RGB2[1] - 0.55*RGB2[0] + 0.45*RGB2[2], image, 210, 255, 0);
-	
+
 	cv::Mat canny;
 	cv::Canny(image, canny, 100, 255, 3, 0);
 	cv::threshold(canny, canny, 200, 255, 0);
@@ -421,13 +422,13 @@ int main()
 	std::vector<cv::Vec4i> hierarhy;
 	cv::findContours(canny, conturs, hierarhy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
-	
 
 
-	//Filtracja konturów
 
-	conturs2 = filterArea(conturs,canny);          //Filtracja z wykorzystaniem pola konturów
-	conturs2 = filterRectangle(conturs2, canny);   //Filtracja z wykorzystaniem prostokatów
+	//Filtracja konturï¿½w
+
+	conturs2 = filterArea(conturs,canny);          //Filtracja z wykorzystaniem pola konturï¿½w
+	conturs2 = filterRectangle(conturs2, canny);   //Filtracja z wykorzystaniem prostokatï¿½w
 
 	//Utworzenie wektora liter
 	std::vector<letter>letters;
@@ -437,9 +438,9 @@ int main()
 		letters[i].moment = cv::moments(conturs2[i], false);
 		letters[i].wsp = cv::Point2f(letters[i].moment.m10 / letters[i].moment.m00, letters[i].moment.m01 / letters[i].moment.m00);
 	}
-	
-	
-	letters = filterDup(letters,conturs2);         //Filtracja powtarzaj¹cyh sie konturów
+
+
+	letters = filterDup(letters,conturs2);         //Filtracja powtarzajï¿½cyh sie konturï¿½w
 
 	//Rysowanie wszystkich liter
 	cv::Mat drawing = prosty;
@@ -449,38 +450,38 @@ int main()
 		drawContours(drawing, conturs2, i, color, 3, 8, hierarhy, 0, cv::Point());
 		cv::circle(drawing, letters[i].wsp, 6, cv::Scalar(255, 140, 130), -1);
 	}
-	
-	//Mapa do przechowywania wartoœci momentów z bazy
+
+	//Mapa do przechowywania wartoï¿½ci momentï¿½w z bazy
 	std::multimap<char, std::vector<double>>base = loadBase("baza.txt");
-	
+
 
 
 
 	//Rozpoznanie liter
 
-	//Rysowanie kolejnych konturów liter na ciemnym polu
+	//Rysowanie kolejnych konturï¿½w liter na ciemnym polu
 	for (int o = 0; o < letters.size(); o++)
 	{
 	//drawing = cv::Mat::zeros(canny.size(), CV_8UC3);
 	//drawContours(drawing, conturs2, o, cv::Scalar(255, 255, 255), 3, 8, hierarhy, 0, cv::Point());
 	//cv::circle(drawing, letters[o].wsp, 6, cv::Scalar(255, 140, 130), -1);
-	
+
 	std::cout << recogniseLetter(letters[o], base) << letters[o].wsp.x << " " << letters[o].wsp.y << std::endl;
 	std::cout << letters[o].moment.m00 << std::endl << letters[o].moment.m01 << std::endl << letters[o].moment.m02 << std::endl << letters[o].moment.m03 << std::endl << letters[o].moment.m10 << std::endl << letters[o].moment.m11 << std::endl << letters[o].moment.m12 << std::endl;
 	std::cout << std::endl;
 	//cv::imshow("test", drawing);
 	//cv::waitKey(0);
 	}
-	
 
 
 
-	//Obliczanie punktów za s³owa
 
-	int premieLiterowe[15][15];        //Wartoœci premii s³ownych dla ka¿dgo pola planszy
-	int premieWyrazowe[15][15];        //Wartoœci premii wyrazowych dla ka¿dego pola planszy
-	letter literyNaPlanszy[15][15];    //Po³o¿enie rozpoznanych liter na planszy
-	std::map<char, int>wartosciLiter;  //Do przechowywania wartoœci punktowej litery
+	//Obliczanie punktï¿½w za sï¿½owa
+
+	int premieLiterowe[15][15];        //Wartoï¿½ci premii sï¿½ownych dla kaï¿½dgo pola planszy
+	int premieWyrazowe[15][15];        //Wartoï¿½ci premii wyrazowych dla kaï¿½dego pola planszy
+	letter literyNaPlanszy[15][15];    //Poï¿½oï¿½enie rozpoznanych liter na planszy
+	std::map<char, int>wartosciLiter;  //Do przechowywania wartoï¿½ci punktowej litery
 
 
 	wczytajPremie(premieLiterowe, "premieLiterowe.txt");
@@ -495,9 +496,9 @@ int main()
 
 
 	std::vector<slowo>slowaNaPlanszy = znajdzSlowaNaPlanszy(literyNaPlanszy);
-	slowaNaPlanszy=filtrujS³owaNaPlanszy(slowaNaPlanszy);
+	slowaNaPlanszy=filtrujSï¿½owaNaPlanszy(slowaNaPlanszy);
 	wyswietSlowa(slowaNaPlanszy);
-	
+
 	policzPunktySlowNaPlanszy(slowaNaPlanszy);
 	wyswietlNajlepiejPunktowane(drawing, slowaNaPlanszy);
 
